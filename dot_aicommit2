@@ -1,0 +1,22 @@
+# General Settings
+logging=true
+generate=1
+temperature=1
+maxTokens=100000
+timeout=30000
+locale=en
+type=conventional
+
+# [OPENAI]
+# key=
+# model=gpt-4.1-mini
+
+[GEMINI]
+# key=xxxx
+# model=gemini-flash-lite-latest
+# model=gemini-2.5-flash-lite
+model=gemini-flash-latest
+# model=gemini-2.5-flash
+topP=0.95
+includeBody=true
+
