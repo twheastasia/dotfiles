@@ -277,22 +277,36 @@ install_nvm() {
 
 # Install Visual Studio Code
 install_vscode() {
-    if ! command_exists code; then
-        log_info "Installing Visual Studio Code..."
-        if [[ "$OS" == "macos" ]]; then
-            brew install --cask visual-studio-code
-        elif [[ "$OS" == "ubuntu" ]]; then
-            if command_exists snap; then
-                sudo snap install code --classic
-            else
-                log_warning "snap not available, skipping VS Code installation"
-                log_info "Please install VS Code manually from https://code.visualstudio.com/"
-            fi
+    # Check if VS Code is installed
+    local vscode_installed=false
+    if [[ "$OS" == "macos" ]]; then
+        if [ -d "/Applications/Visual Studio Code.app" ]; then
+            vscode_installed=true
         fi
-        log_success "Visual Studio Code installed"
-    else
-        log_success "Visual Studio Code already installed"
+    elif [[ "$OS" == "ubuntu" ]]; then
+        if command_exists code; then
+            vscode_installed=true
+        fi
     fi
+    
+    if $vscode_installed; then
+        log_success "Visual Studio Code already installed"
+        return
+    fi
+    
+    log_info "Installing Visual Studio Code..."
+    if [[ "$OS" == "macos" ]]; then
+        brew install --cask visual-studio-code
+    elif [[ "$OS" == "ubuntu" ]]; then
+        if command_exists snap; then
+            sudo snap install code --classic
+        else
+            log_warning "snap not available, skipping VS Code installation"
+            log_info "Please install VS Code manually from https://code.visualstudio.com/"
+            return
+        fi
+    fi
+    log_success "Visual Studio Code installed"
 }
 
 # Install Lazygit
